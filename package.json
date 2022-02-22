@@ -1,0 +1,52 @@
+{
+    "name": "task-runner",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.html",
+    "scripts": {
+        "init-project": "npm install && npm-run-all init:*",
+        "init:dirs": "mkdirp client src/sass src/css src/vendor src/images src/js src/db",
+        "init:files": "touch README.md src/index.html src/sass/style.scss src/js/script.js src/db/app.json",
+        "init:gitignore": "curl https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore -o .gitignore",
+        "init:gitignore:custom": "echo \"client\" >> .gitignore",
+        "init:db": "echo {} >> src/db/app.json",
+        "test": "npm-run-all test:*",
+        "test:html": "html-validate src/*.html",
+        "test:js": "eslint --fix src/js/",
+        "test:scss": "stylelint --fix src/sass/",
+        "server": "nodemon server.js",
+        "build": "npm-run-all build:* test",
+        "build:clean": "rimraf client && mkdirp client",
+        "build:copy": "copyfiles -a -u 1 -e \"**/sass/**/*\" -e \"**/.gitkeep\" \"src/**/*\" client",
+        "build:sass": "sass src/sass:client/css ",
+        "build:autoprefixer": "postcss client/css/*.css --use autoprefixer -d client/css",
+        "build-dev": "npm-run-all build-dev:sass build:autoprefixer",
+        "build-dev:sass": "sass src/sass:client/css",
+        "watch": "npm-run-all build build-dev -p watch:* server",
+        "watch:sassprefixer": "onchange \"src/sass/**/*.scss\" -- npm run build-dev",
+        "watch:copy": "onchange -e \"**/sass/**/*\" -e \"**/.gitkeep\" \"src/**/*\" -- copyfiles -a -u 1 {{changed}} client"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "autoprefixer": "^10.2.4",
+        "copyfiles": "^2.1.0",
+        "eslint": "^5.14.1",
+        "globstar": "^1.0.0",
+        "html-validate": "^2.8.0",
+        "mkdirp": "^0.5.1",
+        "nodemon": "^2.0.15",
+        "npm-run-all": "^4.1.5",
+        "onchange": "^5.2.0",
+        "postcss": "^8.2.6",
+        "postcss-cli": "^8.3.1",
+        "rimraf": "^3.0.2",
+        "stylelint": "^9.10.1",
+        "stylelint-scss": "^3.5.4"
+    },
+    "dependencies": {
+        "json-server": "^0.16.3",
+        "sass": "^1.35.1"
+    }
+}
