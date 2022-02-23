@@ -47,6 +47,7 @@
     },
     "dependencies": {
         "json-server": "^0.16.3",
-        "sass": "^1.35.1"
+        "sass": "^1.35.1",
+        "socket.io": "2.2.0"
     }
 }
